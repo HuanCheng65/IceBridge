@@ -57,7 +57,8 @@ public class AboutPageAdapter extends BaseAdapter<AboutPage.Item> {
                     imageView.setLayoutParams(imageLayoutParams);
                     Glide.with(mContext)
                             .load(item.getIcon().getDrawable())
-                            .apply(RequestOptions.circleCropTransform())
+                            .apply(RequestOptions.circleCropTransform()
+                                    .placeholder(R.drawable.bg_placeholder_circle))
                             .transition(DrawableTransitionOptions.withCrossFade())
                             .into(imageView);
                     break;

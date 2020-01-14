@@ -35,53 +35,110 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppTheme.Translucent"
             android:name=".activities.BridgeActivity"
-            android:label="@string/bridge_description">
+            android:label="@string/bridge_description"
+            android:theme="@style/AppTheme.Translucent">
             <intent-filter>
-                <data android:scheme="sinaweibo"
-                    android:host="detail" />
-                <data android:scheme="sinaweibo"
-                    android:host="seccomment" />
-                <data android:scheme="sinaweibo"
-                    android:host="article" />
-                <data android:scheme="sinaweibo"
-                    android:host="atriclebrowser" />
-                <data android:scheme="sinaweibo"
-                    android:host="groupfeed" />
-                <data android:scheme="sinaweibo"
-                    android:host="groupinfo" />
-                <data android:scheme="sinaweibo"
-                    android:host="customweibosource" />
-                <data android:scheme="sinaweibo"
-                    android:host="userinfo" />
-                <data android:scheme="sinaweibo"
-                    android:host="gotohome" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <data android:scheme="http"
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="groupinfo"
+                    android:scheme="sinaweibo" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="groupfeed"
+                    android:scheme="sinaweibo" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="searchall"
+                    android:scheme="sinaweibo" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="detail"
+                    android:scheme="sinaweibo" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="seccomment"
+                    android:scheme="sinaweibo" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
                     android:host="weibo.cn"
-                    android:pathPrefix="/u" />
-                <data android:scheme="https"
-                    android:host="weibo.cn"
-                    android:pathPrefix="/u" />
-                <data android:scheme="http"
+                    android:path="/qr/detail"
+                    android:scheme="http" />
+                <data
+                    android:host="m.weibo.cn"
+                    android:pathPrefix="/status"
+                    android:scheme="http" />
+                <data
+                    android:host="m.weibo.cn"
+                    android:pathPrefix="/status"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="userinfo"
+                    android:scheme="sinaweibo" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="m.weibo.cn"
+                    android:pathPrefix="/u"
+                    android:scheme="http" />
+                <data
+                    android:host="m.weibo.cn"
+                    android:pathPrefix="/u"
+                    android:scheme="https" />
+                <data
                     android:host="weibo.com"
-                    android:pathPrefix="/status" />
-                <data android:scheme="https"
+                    android:pathPrefix="/u"
+                    android:scheme="http" />
+                <data
                     android:host="weibo.com"
-                    android:pathPrefix="/status" />
-                <data android:scheme="http"
-                    android:host="media.weibo.cn"
-                    android:pathPrefix="/article" />
-                <data android:scheme="https"
-                    android:host="media.weibo.cn"
-                    android:pathPrefix="/article" />
-                <data android:scheme="http"
-                    android:host="weibo.com"
-                    android:pathPrefix="/ttarticle/p/show" />
-                <data android:scheme="https"
-                    android:host="weibo.com"
-                    android:pathPrefix="/ttarticle/p/show" />
+                    android:pathPrefix="/u"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <data android:scheme="mqq" />

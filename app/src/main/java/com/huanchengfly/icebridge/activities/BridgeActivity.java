@@ -2,14 +2,12 @@ package com.huanchengfly.icebridge.activities;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,7 +15,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.huanchengfly.icebridge.R;
 import com.huanchengfly.icebridge.adapters.ChooseAppAdapter;
 import com.huanchengfly.icebridge.beans.BridgeInfo;
@@ -53,9 +50,7 @@ public class BridgeActivity extends BaseActivity {
                     finish();
                 }
             });
-            return;
-        }
-        bridge();
+        } else bridge();
     }
 
     @Override
@@ -72,8 +67,10 @@ public class BridgeActivity extends BaseActivity {
             finish();
             return;
         }
+        boolean needFinish = true;
         for (Bridge bridge : bridgeInfo.getBridges()) {
             if (hasIntent(intent, bridge)) {
+                needFinish = false;
                 List<String> packages = getCurrentPackages(bridge);
                 if (packages.size() == 0) {
                     continue;
@@ -96,6 +93,7 @@ public class BridgeActivity extends BaseActivity {
                 break;
             }
         }
+        if (needFinish) finish();
     }
 
     @SuppressLint("WrongConstant")
@@ -135,27 +133,47 @@ public class BridgeActivity extends BaseActivity {
 
     private boolean hasIntent(Intent intent, Bridge bridge) {
         for (IntentFilter intentFilter : bridge.getIntentFilters()) {
-            if (hasIntent(intent, intentFilter.getSchemes(), intentFilter.getHosts())) {
+            if (hasIntent(intent, intentFilter)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean hasIntent(Intent intent, List<String> schemes, List<String> hosts) {
+    private boolean hasIntent(Intent intent, IntentFilter intentFilter) {
+        List<String> schemes = intentFilter.getSchemes();
+        List<String> hosts = intentFilter.getHosts();
+        List<String> paths = intentFilter.getPaths();
+        List<String> pathPrefixes = intentFilter.getPathPrefixes();
         Uri uri = intent.getData();
         if (uri == null) {
             return false;
         }
         String currentScheme = uri.getScheme();
         String currentHost = uri.getHost();
-        if (currentScheme != null && schemes != null && schemes.contains(currentScheme.toLowerCase())) {
-            if (currentHost != null && hosts != null) {
-                return hosts.contains(currentHost.toLowerCase());
+        String currentPath = uri.getPath();
+        boolean hasIntent = false;
+        if (schemes != null && currentScheme != null && schemes.contains(currentScheme.toLowerCase())) {
+            hasIntent = true;
+            if (hosts != null) {
+                hasIntent = currentHost != null && hosts.contains(currentHost.toLowerCase());
             }
-            return true;
+            if (hasIntent && pathPrefixes != null) {
+                hasIntent = false;
+                if (currentPath != null) {
+                    for (String prefix : pathPrefixes) {
+                        if (currentPath.toLowerCase().startsWith(prefix)) {
+                            hasIntent = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (hasIntent && paths != null) {
+                hasIntent = currentPath != null && paths.contains(currentPath.toLowerCase());
+            }
         }
-        return false;
+        return hasIntent;
     }
 
     @Override

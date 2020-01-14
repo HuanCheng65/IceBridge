@@ -2,9 +2,9 @@ package com.huanchengfly.icebridge.engines;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.catchingnow.icebox.sdk_client.IceBox;
 import com.huanchengfly.icebridge.R;
 import com.huanchengfly.icebridge.utils.Util;
 import com.stericson.RootShell.exceptions.RootDeniedException;
@@ -25,23 +25,64 @@ public final class RootEngine extends BaseEngine {
         super(context);
     }
 
+    public static final String PACKAGE_MANAGER_COMMAND_BASE = "pm ";
+
     @Override
     public void setEnabled(String pkgName, boolean enabled, Callback callback) {
-        Command command = new Command(0, "pm " + (enabled ? "enable" : "disable-user") + " " + pkgName) {
-            @Override
-            public void commandCompleted(int id, int exitcode) {
-                super.commandCompleted(id, exitcode);
-                if (exitcode == 0) {
-                    callback.onSuccess();
-                } else {
-                    callback.onFailure();
-                }
-            }
-        };
+        String commandStr = PACKAGE_MANAGER_COMMAND_BASE;
+        String command2Str = PACKAGE_MANAGER_COMMAND_BASE;
         try {
-            RootTools.getShell(true).add(command);
-        }catch (IOException | RootDeniedException | TimeoutException ex) {
-            ex.printStackTrace();
+            int flags = IceBox.getAppEnabledSetting(getContext(), pkgName);
+            if ((flags != 0 && !enabled) || (flags == 0 && enabled)) {
+                callback.onSuccess();
+                return;
+            }
+            if (!enabled) {
+                commandStr += "disable-user ";
+            } else if (enabled && flags == IceBox.FLAG_PM_DISABLE_USER) {
+                commandStr += "enable ";
+            } else if (enabled && flags == IceBox.FLAG_PM_HIDE) {
+                commandStr += "unhide ";
+            } else if (enabled && flags == IceBox.FLAG_PM_HIDE + IceBox.FLAG_PM_DISABLE_USER) {
+                commandStr += "enable ";
+                command2Str += "unhide ";
+            }
+            Command command;
+            commandStr += pkgName;
+            if (PACKAGE_MANAGER_COMMAND_BASE.equalsIgnoreCase(command2Str)) {
+                command = new Command(0, commandStr) {
+                    @Override
+                    public void commandCompleted(int id, int exitcode) {
+                        super.commandCompleted(id, exitcode);
+                        if (exitcode == 0) {
+                            callback.onSuccess();
+                        } else {
+                            callback.onFailure();
+                        }
+                    }
+                };
+            } else {
+                command2Str += pkgName;
+                command = new Command(0, commandStr, command2Str) {
+                    @Override
+                    public void commandCompleted(int id, int exitcode) {
+                        super.commandCompleted(id, exitcode);
+                        if (exitcode == 0) {
+                            callback.onSuccess();
+                        } else {
+                            callback.onFailure();
+                        }
+                    }
+                };
+            }
+            try {
+                RootTools.getShell(true).add(command);
+            } catch (IOException | RootDeniedException | TimeoutException ex) {
+                ex.printStackTrace();
+                callback.onFailure();
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
             callback.onFailure();
         }
     }

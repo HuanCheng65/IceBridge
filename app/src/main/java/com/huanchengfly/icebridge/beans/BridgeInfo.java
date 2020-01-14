@@ -47,6 +47,17 @@ public class BridgeInfo {
     public static class IntentFilter {
         private List<String> schemes;
         private List<String> hosts;
+        private List<String> paths;
+        @SerializedName("path_prefix")
+        private List<String> pathPrefixes;
+
+        public List<String> getPaths() {
+            return paths;
+        }
+
+        public List<String> getPathPrefixes() {
+            return pathPrefixes;
+        }
 
         public List<String> getSchemes() {
             return schemes;

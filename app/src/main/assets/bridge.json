@@ -1,22 +1,42 @@
 {
-    "version": 9,
+  "version": 10,
     "bridges": [{
         "packages": ["com.sina.weibo", "com.weibo.international", "com.sina.weibolite", "com.hengye.share"],
         "intent_filters": [{
             "schemes": ["sinaweibo"],
-            "hosts": ["gotohome", "userinfo", "customweibosource", "groupinfo", "groupfeed", "detail", "seccomment", "article", "atriclebrowser"]
+          "hosts": [
+            "gotohome",
+            "userinfo",
+            "customweibosource",
+            "groupinfo",
+            "groupfeed",
+            "detail",
+            "seccomment",
+            "article",
+            "articlebrowser",
+            "searchall"
+          ]
         }, {
             "schemes": ["http", "https"],
-            "hosts": ["weibo.cn", "weibo.com"],
+          "hosts": [
+            "weibo.cn"
+          ],
             "path_prefix": ["/u", "/status"]
         }, {
+          "schemes": [
+            "http"
+          ],
+          "hosts": [
+            "weibo.cn"
+          ],
+          "path": [
+            "/qr/detail"
+          ]
+        },
+          {
             "schemes": ["http", "https"],
             "hosts": ["media.weibo.cn"],
             "path_prefix": ["/article"]
-        }, {
-            "schemes": ["http", "https"],
-            "hosts": ["weibo.com"],
-            "path_prefix": ["/ttarticle/p/show"]
         }]
     }, {
         "packages": ["com.tencent.mobileqq", "com.tencent.tim"],

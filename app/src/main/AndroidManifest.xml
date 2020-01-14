@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.huanchengfly.icebridge">
+
+    <uses-permission android:name="com.catchingnow.icebox.SDK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".base.MyApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activities.EnhanceModeActivity" />
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Ice Bridge 增强模式" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="82" />
+
+        <activity android:name=".activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/AppTheme.Translucent"
+            android:name=".activities.BridgeActivity"
+            android:label="@string/bridge_description">
+            <intent-filter>
+                <data android:scheme="sinaweibo"
+                    android:host="detail" />
+                <data android:scheme="sinaweibo"
+                    android:host="seccomment" />
+                <data android:scheme="sinaweibo"
+                    android:host="article" />
+                <data android:scheme="sinaweibo"
+                    android:host="atriclebrowser" />
+                <data android:scheme="sinaweibo"
+                    android:host="groupfeed" />
+                <data android:scheme="sinaweibo"
+                    android:host="groupinfo" />
+                <data android:scheme="sinaweibo"
+                    android:host="customweibosource" />
+                <data android:scheme="sinaweibo"
+                    android:host="userinfo" />
+                <data android:scheme="sinaweibo"
+                    android:host="gotohome" />
+
+                <data android:scheme="http"
+                    android:host="weibo.cn"
+                    android:pathPrefix="/u" />
+                <data android:scheme="https"
+                    android:host="weibo.cn"
+                    android:pathPrefix="/u" />
+                <data android:scheme="http"
+                    android:host="weibo.com"
+                    android:pathPrefix="/status" />
+                <data android:scheme="https"
+                    android:host="weibo.com"
+                    android:pathPrefix="/status" />
+                <data android:scheme="http"
+                    android:host="media.weibo.cn"
+                    android:pathPrefix="/article" />
+                <data android:scheme="https"
+                    android:host="media.weibo.cn"
+                    android:pathPrefix="/article" />
+                <data android:scheme="http"
+                    android:host="weibo.com"
+                    android:pathPrefix="/ttarticle/p/show" />
+                <data android:scheme="https"
+                    android:host="weibo.com"
+                    android:pathPrefix="/ttarticle/p/show" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="mqq" />
+                <data android:scheme="mqqapi" />
+                <data android:scheme="mqqopensdkapi" />
+                <data android:scheme="wtloginmqq" />
+                <data android:scheme="mqqwpa" />
+                <data android:scheme="weixin" />
+                <data android:scheme="tbfrs" />
+                <data android:scheme="tbpb" />
+                <data android:scheme="zhihu" />
+                <data android:scheme="baiduyun" />
+                <data android:scheme="yundownload" />
+                <data android:scheme="yunacceptinvite" />
+                <data android:scheme="bdnetdiskwap" />
+                <data android:scheme="bdnetdisk" />
+                <data android:scheme="yunacceptsharedir" />
+                <data android:scheme="bilibili" />
+                <data android:scheme="qqmusic" />
+                <data android:scheme="kugou" />
+                <data android:scheme="kwapp" />
+                <data android:scheme="douban" />
+                <data android:scheme="alipays" />
+                <data android:scheme="alipayqr" />
+                <data android:scheme="alipayauth" />
+                <data android:scheme="alipayre" />
+                <data android:scheme="orpheus" />
+                <data android:scheme="orpheus-cortana" />
+                <data android:scheme="doubanradio" />
+                <data android:scheme="taobao" />
+                <data android:scheme="youku" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="qm.qq.com"
+                    android:scheme="http" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="qq"
+                    android:scheme="imto" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="weixin.qq.com"
+                    android:pathPrefix="/r/"
+                    android:scheme="http" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.XposedBridgeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.huanchengfly.icebridge.intent.action.XPOSED_BRIDGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.AboutActivity" />
+        <activity android:name=".activities.IntroActivity" />
+
+        <provider
+            android:name=".providers.ConfigProvider"
+            android:authorities="com.huanchengfly.icebridge.providers.ConfigProvider"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+    </application>
+
+</manifest>

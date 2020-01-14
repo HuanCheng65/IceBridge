@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2979FF</color>
+    <color name="colorPrimaryDark">#2979FF</color>
+    <color name="colorAccent">#2979FF</color>
+    <color name="colorAccentTrans">#262979FF</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#FF4CAF50</color>
+    <color name="red">#D32F2F</color>
+    <color name="text_color_primary">#DE000000</color>
+    <color name="text_color_secondary">#8A000000</color>
+    <color name="icon_color">#8A000000</color>
+    <color name="text_color_disabled">#61000000</color>
+    <color name="color_shadow">#FEE9E9E9</color>
+    <color name="color_divider">#1F000000</color>
+    <color name="color_space">#F3F3F3</color>
+    <color name="color_warning">#F57C00</color>
+    <color name="colorPlaceHolder">#f0f0f0</color>
+    <color name="bg_progress_dialog">#CC000000</color>
+</resources>

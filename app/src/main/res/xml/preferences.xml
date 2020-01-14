@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="@string/key_enhance_mode_status"
+        android:title="@string/title_enhance_mode"
+        android:iconSpaceReserved="false"
+        tools:ignore="UnusedAttribute" />
+    <Preference
+        android:summary="@string/summary_enhance_mode_status" />
+</PreferenceScreen>

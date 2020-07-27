@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:clipToPadding="false"
+    android:background="@drawable/bg_radius_16dp"
+    tools:backgroundTint="@color/colorPrimaryTrans"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:layout_marginEnd="-18dp"
+        android:layout_marginTop="-6dp"
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:layout_alignEnd="@id/icon"
+        android:layout_alignTop="@id/icon"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:id="@+id/disabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_radius_16dp"
+        android:backgroundTint="@color/colorPrimary">
+
+        <TextView
+            android:textColor="@color/white"
+            android:text="@string/title_disabled"
+            android:textSize="10sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/icon"
+        android:id="@+id/title_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            tools:text="Title"
+            android:textColor="@drawable/text_color_selector"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            tools:text="Subtitle"
+            android:textColor="@drawable/text_color_secondary_selector"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/title"
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>

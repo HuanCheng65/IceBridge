@@ -69,6 +69,13 @@
     <string name="request_permission_failure">权限申请失败</string>
     <string name="title_select_apps">选择要使用的应用</string>
     <string name="bridging">正在跳转中…</string>
-    <string name="subtitle_work_mode_ice_box_is_miui">由于系统 Bug，MIUI 11 可能不支持此模式</string>
+    <string name="subtitle_work_mode_ice_box_is_miui">由于系统 Bug，MIUI 系统 可能不支持此模式</string>
     <string name="device_no_root">设备未获取 Root 权限，无法使用此模式</string>
+    <string name="share_bridge_description">从被冻结的应用分享</string>
+    <string name="no_apps_for_share">没有可用来分享的应用</string>
+    <string name="key_show_enable_app">show_enable_app</string>
+    <string name="title_show_enable_app">在列表中显示未冻结应用</string>
+    <string name="title_disabled">已冻结</string>
+    <string name="title_bridge_preferences">设置</string>
+    <string name="no_apps_for_bridge">没有可跳转的应用</string>
 </resources>

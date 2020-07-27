@@ -9,7 +9,6 @@ import java.util.List;
 
 public class BridgeInfo {
     private int version;
-    private List<Bridge> bridges;
     private List<Hook> hooks;
 
     @NonNull
@@ -24,48 +23,6 @@ public class BridgeInfo {
 
     public int getVersion() {
         return version;
-    }
-
-    public List<Bridge> getBridges() {
-        return bridges;
-    }
-
-    public static class Bridge {
-        private List<String> packages;
-        @SerializedName("intent_filters")
-        private List<IntentFilter> intentFilters;
-
-        public List<String> getPackages() {
-            return packages;
-        }
-
-        public List<IntentFilter> getIntentFilters() {
-            return intentFilters;
-        }
-    }
-
-    public static class IntentFilter {
-        private List<String> schemes;
-        private List<String> hosts;
-        private List<String> paths;
-        @SerializedName("path_prefix")
-        private List<String> pathPrefixes;
-
-        public List<String> getPaths() {
-            return paths;
-        }
-
-        public List<String> getPathPrefixes() {
-            return pathPrefixes;
-        }
-
-        public List<String> getSchemes() {
-            return schemes;
-        }
-
-        public List<String> getHosts() {
-            return hosts;
-        }
     }
 
     public static class Hook {

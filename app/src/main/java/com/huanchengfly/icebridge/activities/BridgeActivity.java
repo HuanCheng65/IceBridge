@@ -5,33 +5,30 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import com.catchingnow.icebox.sdk_client.IceBox;
+import com.huanchengfly.about.utils.DisplayUtil;
 import com.huanchengfly.icebridge.R;
-import com.huanchengfly.icebridge.adapters.ChooseAppAdapter;
-import com.huanchengfly.icebridge.beans.BridgeInfo;
-import com.huanchengfly.icebridge.beans.BridgeInfo.Bridge;
-import com.huanchengfly.icebridge.beans.BridgeInfo.IntentFilter;
+import com.huanchengfly.icebridge.adapters.GridChooseResolveInfoAdapter;
+import com.huanchengfly.icebridge.dividers.SpacesItemDecoration;
 import com.huanchengfly.icebridge.engines.BaseEngine;
 import com.huanchengfly.icebridge.engines.EngineManager;
 import com.huanchengfly.icebridge.utils.BridgeUtil;
-import com.huanchengfly.icebridge.utils.PackageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BridgeActivity extends BaseActivity {
     public static final String TAG = "Bridge";
-
-    private BridgeInfo bridgeInfo;
 
     private BaseEngine mEngine;
 
@@ -57,59 +54,82 @@ public class BridgeActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BridgeUtil.init(this);
-        bridgeInfo = BridgeUtil.getBridgeInfo(this);
         start();
     }
 
+    private int getSpanCount(int itemCount) {
+        if (itemCount < 2) {
+            return 1;
+        } else if (itemCount == 2) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+
+    @SuppressLint("WrongConstant")
     private void bridge() {
         Intent intent = getIntent();
         if (intent.getScheme() == null) {
             finish();
             return;
         }
-        boolean needFinish = true;
-        for (Bridge bridge : bridgeInfo.getBridges()) {
-            if (hasIntent(intent, bridge)) {
-                needFinish = false;
-                List<String> packages = getCurrentPackages(bridge);
-                if (packages.size() == 0) {
-                    continue;
-                } else if (packages.size() == 1) {
-                    start(intent, packages.get(0));
-                    break;
-                }
-                RecyclerView recyclerView = new RecyclerView(this);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                ChooseAppAdapter appAdapter = new ChooseAppAdapter(this, packages, 0);
-                recyclerView.setAdapter(appAdapter);
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.title_select_apps)
-                        .setView(recyclerView)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.button_sure, (dialog, which) -> {
-                            start(intent, packages.get(appAdapter.getSelectedPosition()));
-                        })
-                        .show();
-                break;
+        intent.setComponent(null);
+        List<ResolveInfo> resolveInfoList;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            resolveInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.GET_ACTIVITIES | PackageManager.MATCH_DISABLED_COMPONENTS);
+        } else {
+            resolveInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.GET_ACTIVITIES | PackageManager.GET_DISABLED_COMPONENTS);
+        }
+        List<ResolveInfo> resolveInfos = new ArrayList<>();
+        List<ResolveInfo> enabledResolveInfos = new ArrayList<>();
+        for (ResolveInfo resolveInfo : resolveInfoList) {
+            if (resolveInfo.activityInfo == null) {
+                continue;
+            }
+            if (resolveInfo.activityInfo.packageName.equalsIgnoreCase(getPackageName())) {
+                continue;
+            }
+            if (IceBox.getAppEnabledSetting(resolveInfo.activityInfo.applicationInfo) == 0) {
+                enabledResolveInfos.add(resolveInfo);
+            } else {
+                resolveInfos.add(resolveInfo);
             }
         }
-        if (needFinish) finish();
+        boolean showEnableApp = getSharedPreferences("preferences", MODE_PRIVATE).getBoolean("show_enable_app", true);
+        if (showEnableApp) resolveInfos.addAll(enabledResolveInfos);
+        if (resolveInfos.size() == 0) {
+            Toast.makeText(this, R.string.no_apps_for_bridge, Toast.LENGTH_SHORT).show();
+            finish();
+        } else if (resolveInfos.size() == 1) {
+            start(intent, resolveInfos.get(0));
+        } else {
+            RecyclerView recyclerView = new RecyclerView(this);
+            recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(this, 8)));
+            recyclerView.getItemAnimator().setAddDuration(0);
+            recyclerView.getItemAnimator().setChangeDuration(0);
+            recyclerView.getItemAnimator().setMoveDuration(0);
+            recyclerView.getItemAnimator().setRemoveDuration(0);
+            ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+            recyclerView.setLayoutManager(new GridLayoutManager(this, getSpanCount(resolveInfos.size())));
+            GridChooseResolveInfoAdapter appAdapter = new GridChooseResolveInfoAdapter(this, resolveInfos);
+            recyclerView.setAdapter(appAdapter);
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.title_select_apps)
+                    .setView(recyclerView)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.button_sure, (dialog, which) -> {
+                        start(intent, resolveInfos.get(appAdapter.getSelectedPosition()));
+                    })
+                    .show();
+        }
     }
 
-    @SuppressLint("WrongConstant")
-    private void start(Intent intent, String pkg) {
-        mEngine.setEnabled(pkg, true, new BaseEngine.Callback() {
+    private void start(Intent intent, ResolveInfo resolveInfo) {
+        mEngine.setEnabled(resolveInfo.activityInfo.packageName, true, new BaseEngine.Callback() {
             @Override
             public void onSuccess() {
-                intent.setComponent(null);
-                final PackageManager packageManager = getPackageManager();
-                List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
-                for (ResolveInfo resolveInfo : list) {
-                    if (TextUtils.equals(resolveInfo.activityInfo.packageName, pkg)) {
-                        intent.setComponent(new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name));
-                        break;
-                    }
-                }
+                intent.setComponent(new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name));
                 startActivity(intent);
                 finish();
             }
@@ -119,61 +139,6 @@ public class BridgeActivity extends BaseActivity {
                 finish();
             }
         });
-    }
-
-    private List<String> getCurrentPackages(Bridge bridge) {
-        List<String> packages = new ArrayList<>();
-        for (String packageName : bridge.getPackages()) {
-            if (PackageUtil.checkAppInstalled(this, packageName)) {
-                packages.add(packageName);
-            }
-        }
-        return packages;
-    }
-
-    private boolean hasIntent(Intent intent, Bridge bridge) {
-        for (IntentFilter intentFilter : bridge.getIntentFilters()) {
-            if (hasIntent(intent, intentFilter)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean hasIntent(Intent intent, IntentFilter intentFilter) {
-        List<String> schemes = intentFilter.getSchemes();
-        List<String> hosts = intentFilter.getHosts();
-        List<String> paths = intentFilter.getPaths();
-        List<String> pathPrefixes = intentFilter.getPathPrefixes();
-        Uri uri = intent.getData();
-        if (uri == null) {
-            return false;
-        }
-        String currentScheme = uri.getScheme();
-        String currentHost = uri.getHost();
-        String currentPath = uri.getPath();
-        boolean hasIntent = false;
-        if (schemes != null && currentScheme != null && schemes.contains(currentScheme.toLowerCase())) {
-            hasIntent = true;
-            if (hosts != null) {
-                hasIntent = currentHost != null && hosts.contains(currentHost.toLowerCase());
-            }
-            if (hasIntent && pathPrefixes != null) {
-                hasIntent = false;
-                if (currentPath != null) {
-                    for (String prefix : pathPrefixes) {
-                        if (currentPath.toLowerCase().startsWith(prefix)) {
-                            hasIntent = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (hasIntent && paths != null) {
-                hasIntent = currentPath != null && paths.contains(currentPath.toLowerCase());
-            }
-        }
-        return hasIntent;
     }
 
     @Override

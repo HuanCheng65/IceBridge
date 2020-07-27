@@ -5,6 +5,10 @@
         android:title="@string/title_enhance_mode"
         android:icon="@drawable/ic_round_offline_bolt" />
     <item
+        android:id="@+id/menu_bridge_preferences"
+        android:title="@string/title_bridge_preferences"
+        android:icon="@drawable/ic_settings_applications" />
+    <item
         android:id="@+id/menu_about"
         android:title="@string/title_about"
         android:icon="@drawable/ic_round_info" />

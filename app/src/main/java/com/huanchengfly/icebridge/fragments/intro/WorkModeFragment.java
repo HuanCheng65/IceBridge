@@ -3,7 +3,6 @@ package com.huanchengfly.icebridge.fragments.intro;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -19,15 +18,16 @@ import com.huanchengfly.icebridge.utils.OSUtils;
 import com.huanchengfly.icebridge.utils.PackageUtil;
 import com.stericson.RootTools.RootTools;
 
-import static com.huanchengfly.icebridge.adapters.SingleChooseAdapter.ItemBean;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.huanchengfly.icebridge.adapters.SingleChooseAdapter.ItemBean;
 
 public class WorkModeFragment extends BaseIntroFragment {
     private SingleChooseAdapter singleChooseAdapter;
 
-    public WorkModeFragment() {}
+    public WorkModeFragment() {
+    }
 
     @Override
     public boolean getDefaultNextButtonEnabled() {

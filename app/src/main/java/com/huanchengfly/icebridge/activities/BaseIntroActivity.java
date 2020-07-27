@@ -1,10 +1,10 @@
 package com.huanchengfly.icebridge.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.button.MaterialButton;
 import com.huanchengfly.icebridge.R;

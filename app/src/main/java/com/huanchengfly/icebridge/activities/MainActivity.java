@@ -2,12 +2,10 @@ package com.huanchengfly.icebridge.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.huanchengfly.icebridge.R;
 import com.huanchengfly.icebridge.utils.BridgeUtil;
-import com.stericson.RootTools.RootTools;
 
 public class MainActivity extends BaseActivity {
     @Override

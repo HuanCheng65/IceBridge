@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.huanchengfly.icebridge.R;
 import com.huanchengfly.icebridge.activities.AboutActivity;
+import com.huanchengfly.icebridge.activities.BridgePreferencesActivity;
 import com.huanchengfly.icebridge.activities.EnhanceModeActivity;
 import com.huanchengfly.icebridge.api.CommonAPICallback;
 import com.huanchengfly.icebridge.api.MyAPI;
@@ -34,7 +34,6 @@ import com.huanchengfly.icebridge.beans.UpdateInfo;
 import com.huanchengfly.icebridge.engines.BaseEngine;
 import com.huanchengfly.icebridge.engines.EngineManager;
 import com.huanchengfly.icebridge.utils.BridgeUtil;
-import com.huanchengfly.icebridge.utils.OSUtils;
 import com.huanchengfly.icebridge.utils.PackageUtil;
 import com.huanchengfly.icebridge.utils.Util;
 
@@ -341,6 +340,9 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         switch (item.getItemId()) {
             case R.id.menu_about:
                 startActivity(new Intent(getAttachContext(), AboutActivity.class));
+                break;
+            case R.id.menu_bridge_preferences:
+                startActivity(new Intent(getAttachContext(), BridgePreferencesActivity.class));
                 break;
             case R.id.menu_enhance_mode:
                 startActivity(new Intent(getAttachContext(), EnhanceModeActivity.class));

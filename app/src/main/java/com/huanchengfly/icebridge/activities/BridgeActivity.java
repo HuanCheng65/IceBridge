@@ -27,6 +27,9 @@ import com.huanchengfly.icebridge.utils.BridgeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.michaelrocks.paranoid.Obfuscate;
+
+@Obfuscate
 public class BridgeActivity extends BaseActivity {
     public static final String TAG = "Bridge";
 

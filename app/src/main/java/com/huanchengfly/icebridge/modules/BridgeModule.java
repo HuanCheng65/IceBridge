@@ -24,9 +24,10 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import io.michaelrocks.paranoid.Obfuscate;
 
+@Obfuscate
 public class BridgeModule implements IXposedHookLoadPackage {
-    public static final String TAG = "BridgeModule";
     public static final String PACKAGE_NAME = "com.huanchengfly.icebridge";
 
     public boolean isMatch(String s, String p) {
@@ -142,7 +143,7 @@ public class BridgeModule implements IXposedHookLoadPackage {
             case "Activity":
                 return Activity.class;
             case "androidx.fragment.app.Fragment":
-                Class fragmentClazz = XposedHelpers.findClassIfExists(className, classLoader);
+                Class<?> fragmentClazz = XposedHelpers.findClassIfExists(className, classLoader);
                 if (fragmentClazz != null) {
                     return fragmentClazz;
                 }
@@ -185,7 +186,7 @@ public class BridgeModule implements IXposedHookLoadPackage {
     }
 
     @Override
-    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
+    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
         if (PACKAGE_NAME.equals(loadPackageParam.packageName)) {
             Class<?> clazz = XposedHelpers.findClassIfExists("com.huanchengfly.icebridge.utils.Util", loadPackageParam.classLoader);
             if (clazz == null) return;

@@ -222,7 +222,8 @@
         </activity>
         <activity
             android:name=".activities.XposedBridgeActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.Translucent">
             <intent-filter>
                 <action android:name="com.huanchengfly.icebridge.intent.action.XPOSED_BRIDGE" />
 

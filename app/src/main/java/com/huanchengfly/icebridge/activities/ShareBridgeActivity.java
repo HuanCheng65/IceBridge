@@ -26,6 +26,9 @@ import com.huanchengfly.icebridge.engines.EngineManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.michaelrocks.paranoid.Obfuscate;
+
+@Obfuscate
 public class ShareBridgeActivity extends BaseActivity {
     private BaseEngine mEngine;
 

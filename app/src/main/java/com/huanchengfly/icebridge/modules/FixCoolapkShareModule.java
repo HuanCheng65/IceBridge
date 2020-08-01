@@ -9,12 +9,14 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import io.michaelrocks.paranoid.Obfuscate;
 
+@Obfuscate
 public class FixCoolapkShareModule implements IXposedHookLoadPackage {
     public static final String PACKAGE_COOLAPK = "com.coolapk.market";
 
     @Override
-    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
+    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
         if (PACKAGE_COOLAPK.equals(loadPackageParam.packageName)) {
             XposedHelpers.findAndHookMethod("com.coolapk.market.util.PackageUtils", loadPackageParam.classLoader, "getShareApps", Context.class, new XC_MethodReplacement() {
                 @Override
